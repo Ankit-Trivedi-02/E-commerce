@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+}
+
+/* Custom aesthetics class names */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary {
+  background-color: #4f46e5; /* direct value */
+  color: white;
+  @apply font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:-translate-y-0.5;
+}
+
+.btn-secondary {
+  color: #1e293b;
+  @apply bg-white border border-gray-300 font-medium py-2 px-4 rounded-lg hover:bg-gray-50 transition-all duration-200 shadow-sm;
+}
