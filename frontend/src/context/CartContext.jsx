@@ -16,20 +16,38 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  const addToCart = (product, qty) => {
-    setCartItems(prev => {
-      const existItem = prev.find(x => x.product === product.product);
+  const addToCart = (product, qty = 1) => {
+    setCartItems((prev) => {
+      const existItem = prev.find(
+        (x) => x.product === product.product
+      );
+
       let newCart;
-      
+
       if (existItem) {
-        newCart = prev.map(x => 
-          x.product === existItem.product ? product : x
+        newCart = prev.map((x) =>
+          x.product === product.product
+            ? {
+              ...x,
+              qty,
+            }
+            : x
         );
       } else {
-        newCart = [...prev, product];
+        newCart = [
+          ...prev,
+          {
+            ...product,
+            qty,
+          },
+        ];
       }
-      
-      localStorage.setItem('cartItems', JSON.stringify(newCart));
+
+      localStorage.setItem(
+        'cartItems',
+        JSON.stringify(newCart)
+      );
+
       return newCart;
     });
   };

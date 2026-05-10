@@ -5,6 +5,8 @@ import {
   ShoppingCart,
   CreditCard,
   Star,
+  Minus,
+  Plus,
 } from 'lucide-react';
 
 import axios from '../api/axios';
@@ -39,36 +41,53 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id, navigate]);
 
-  // Add To Cart
+  // ADD TO CART
   const addToCartHandler = () => {
-    addToCart({
-      product: product._id,
-      name: product.name,
-      image: product.image,
-      price: product.price,
-      countInStock: product.stock,
-      qty: Number(qty),
-    });
+    addToCart(
+      {
+        product: product._id,
+        name: product.name,
+        image: product.image,
+        price: product.price,
+        countInStock: product.stock,
+      },
+      qty
+    );
 
     toast.success('Added to Cart!');
     navigate('/cart');
   };
 
-  // Buy Now
+  // BUY NOW
   const buyNowHandler = () => {
-    addToCart({
-      product: product._id,
-      name: product.name,
-      image: product.image,
-      price: product.price,
-      countInStock: product.stock,
-      qty: Number(qty),
-    });
+    addToCart(
+      {
+        product: product._id,
+        name: product.name,
+        image: product.image,
+        price: product.price,
+        countInStock: product.stock,
+      },
+      qty
+    );
 
     if (!user) {
       navigate('/login?redirect=/checkout');
     } else {
       navigate('/checkout');
+    }
+  };
+
+  // INCREMENT / DECREMENT
+  const incrementQty = () => {
+    if (qty < Math.min(product.stock, 10)) {
+      setQty((prev) => prev + 1);
+    }
+  };
+
+  const decrementQty = () => {
+    if (qty > 1) {
+      setQty((prev) => prev - 1);
     }
   };
 
@@ -80,9 +99,9 @@ const ProductDetail = () => {
     );
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-6">
 
-      {/* Back Button */}
+      {/* BACK BUTTON */}
       <Link
         to="/"
         className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-gray-200 hover:border-indigo-500 hover:text-indigo-600 transition text-sm"
@@ -92,10 +111,10 @@ const ProductDetail = () => {
       </Link>
 
       {product && (
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden p-6 md:p-10">
-          <div className="flex flex-col md:flex-row gap-14">
+        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden p-5 md:p-8">
+          <div className="flex flex-col md:flex-row gap-10">
 
-            {/* Product Image */}
+            {/* IMAGE */}
             <div className="md:w-1/2">
               <div className="border border-gray-200 rounded-3xl overflow-hidden bg-gray-50">
                 <img
@@ -110,21 +129,23 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Product Info */}
+            {/* INFO */}
             <div className="md:w-1/2 flex flex-col justify-between">
 
+              {/* TOP CONTENT */}
               <div>
-                {/* Category */}
+
+                {/* CATEGORY */}
                 <p className="text-sm uppercase tracking-widest text-indigo-500 font-semibold mb-3">
                   {product.category}
                 </p>
 
-                {/* Name */}
-                <h1 className="text-4xl font-bold text-gray-900">
+                {/* NAME */}
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                   {product.name}
                 </h1>
 
-                {/* Rating */}
+                {/* RATING */}
                 <div className="flex items-center gap-1 mt-4">
                   {[1, 2, 3, 4].map((star) => (
                     <Star
@@ -148,9 +169,9 @@ const ProductDetail = () => {
                   </span>
                 </div>
 
-                {/* Price */}
+                {/* PRICE */}
                 <div className="mt-8">
-                  <h2 className="text-5xl font-extrabold text-gray-900">
+                  <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900">
                     ${product.price.toFixed(2)}
                   </h2>
 
@@ -159,8 +180,94 @@ const ProductDetail = () => {
                   </p>
                 </div>
 
-                {/* Description */}
-                <div className="mt-8">
+                {/* STOCK */}
+                <div className="flex items-center justify-between mt-8">
+                  <span className="font-medium text-gray-700">
+                    Availability
+                  </span>
+
+                  <span
+                    className={`font-semibold ${product.stock > 0
+                        ? 'text-green-600'
+                        : 'text-red-500'
+                      }`}
+                  >
+                    {product.stock > 0
+                      ? `${product.stock} In Stock`
+                      : 'Out of Stock'}
+                  </span>
+                </div>
+
+                {/* QUANTITY */}
+                {product.stock > 0 && (
+                  <div className="flex items-center justify-between mt-6">
+
+                    <span className="font-medium text-gray-700">
+                      Quantity
+                    </span>
+
+                    <div className="flex items-center bg-gray-100 rounded-2xl p-1">
+
+                      <button
+                        type="button"
+                        onClick={decrementQty}
+                        disabled={qty <= 1}
+                        className="w-11 h-11 rounded-xl bg-white flex items-center justify-center hover:bg-gray-50 transition disabled:opacity-40"
+                      >
+                        <Minus size={18} />
+                      </button>
+
+                      <span className="w-12 text-center text-lg font-semibold">
+                        {qty}
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={incrementQty}
+                        disabled={
+                          qty >= Math.min(product.stock, 10)
+                        }
+                        className="w-11 h-11 rounded-xl bg-white flex items-center justify-center hover:bg-gray-50 transition disabled:opacity-40"
+                      >
+                        <Plus size={18} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* BUTTONS */}
+                {/* MOBILE: ABOVE DESCRIPTION */}
+                <div className="flex flex-col sm:flex-row gap-4 mt-8">
+
+                  {/* ADD TO CART */}
+                  <button
+                    onClick={addToCartHandler}
+                    disabled={product.stock === 0}
+                    className={`flex-1 py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2 ${product.stock === 0
+                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                      }`}
+                  >
+                    <ShoppingCart size={20} />
+                    Add to Cart
+                  </button>
+
+                  {/* BUY NOW */}
+                  <button
+                    onClick={buyNowHandler}
+                    disabled={product.stock === 0}
+                    className={`flex-1 py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2 ${product.stock === 0
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                      }`}
+                  >
+                    <CreditCard size={20} />
+                    Buy Now
+                  </button>
+                </div>
+
+                {/* DESCRIPTION */}
+                <div className="mt-10 border-t border-gray-100 pt-8">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">
                     About Product
                   </h3>
@@ -169,83 +276,6 @@ const ProductDetail = () => {
                     {product.description}
                   </p>
                 </div>
-              </div>
-
-              {/* Bottom Actions */}
-              <div className="mt-10 border-t border-gray-100 pt-6">
-
-                {/* Stock */}
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-medium text-gray-700">
-                    Availability
-                  </span>
-
-                  <span
-                    className={`font-semibold ${
-                      product.stock > 0
-                        ? 'text-green-600'
-                        : 'text-red-500'
-                    }`}
-                  >
-                    {product.stock > 0
-                      ? `${product.stock} In Stock`
-                      : 'Out of Stock'}
-                  </span>
-                </div>
-
-                {/* Quantity */}
-                {product.stock > 0 && (
-                  <div className="flex items-center gap-4 mb-8">
-                    <span className="font-medium text-gray-700">
-                      Quantity
-                    </span>
-
-                    <select
-                      value={qty}
-                      onChange={(e) => setQty(e.target.value)}
-                      className="border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    >
-                      {[...Array(product.stock).keys()].map((x) => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-
-                {/* Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4">
-
-                  {/* Add To Cart */}
-                  <button
-                    onClick={addToCartHandler}
-                    disabled={product.stock === 0}
-                    className={`flex-1 py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2 ${
-                      product.stock === 0
-                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
-                    }`}
-                  >
-                    <ShoppingCart size={20} />
-                    Add to Cart
-                  </button>
-
-                  {/* Buy Now */}
-                  <button
-                    onClick={buyNowHandler}
-                    disabled={product.stock === 0}
-                    className={`flex-1 py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2 ${
-                      product.stock === 0
-                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                    }`}
-                  >
-                    <CreditCard size={20} />
-                    Buy Now
-                  </button>
-                </div>
-
               </div>
             </div>
           </div>
