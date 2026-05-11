@@ -110,7 +110,7 @@ const Checkout = () => {
             {cartItems.map((item, index) => (
               <div key={index} className="flex justify-between text-sm">
                 <span className="text-gray-600 truncate mr-2">{item.qty}x {item.name}</span>
-                <span className="font-semibold">${(item.price * item.qty).toFixed(2)}</span>
+                <span className="font-semibold">₹{(item.price * item.qty).toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -118,17 +118,17 @@ const Checkout = () => {
           <div className="border-t pt-4 space-y-2 mb-6">
             <div className="flex justify-between text-gray-600">
               <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>₹{subtotal.toFixed(2)}</span>
             </div>
             {discountPercent > 0 && (
               <div className="flex justify-between text-green-600 font-medium">
                 <span>Discount ({discountPercent}%)</span>
-                <span>-${discountAmount.toFixed(2)}</span>
+                <span>-₹{discountAmount.toFixed(2)}</span>
               </div>
             )}
             <div className="flex justify-between text-xl font-bold text-gray-900 border-t pt-4 mt-4">
               <span>Total</span>
-              <span>${totalPrice.toFixed(2)}</span>
+              <span>₹{totalPrice.toFixed(2)}</span>
             </div>
           </div>
           

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Trash2, Minus, Plus, ArrowLeft } from 'lucide-react';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
+import TopPicks from '../components/TopPicks';
 
 const Cart = () => {
   const { cartItems, addToCart, removeFromCart } =
@@ -57,7 +58,7 @@ const Cart = () => {
         {cartItems.length > 0 && (
           <div className="w-full lg:w-[360px] order-1 lg:order-2">
             <div className="bg-white p-5 rounded-3xl shadow-md border border-gray-100 lg:sticky lg:top-24">
-              
+
               <h2 className="text-2xl font-bold text-gray-900 mb-5">
                 Order Summary
               </h2>
@@ -65,7 +66,7 @@ const Cart = () => {
               <div className="space-y-3 border-b border-gray-100 pb-4">
                 <div className="flex justify-between text-gray-600">
                   <span>Items ({totalItems})</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>₹{subtotal.toFixed(2)}</span>
                 </div>
 
                 <div className="flex justify-between text-gray-600">
@@ -77,13 +78,13 @@ const Cart = () => {
 
                 <div className="flex justify-between text-gray-600">
                   <span>Tax</span>
-                  <span>$10.00</span>
+                  <span>pre applied</span>
                 </div>
               </div>
 
               <div className="flex justify-between mt-5 text-xl font-bold text-gray-900">
                 <span>Total</span>
-                <span>${(subtotal + 10).toFixed(2)}</span>
+                <span>₹{(subtotal).toFixed(2)}</span>
               </div>
 
               <button
@@ -152,7 +153,7 @@ const Cart = () => {
 
                     {/* DETAILS */}
                     <div className="flex-1 flex flex-col justify-between">
-                      
+
                       <div>
                         <Link
                           to={`/product/${item.product}`}
@@ -162,7 +163,7 @@ const Cart = () => {
                         </Link>
 
                         <p className="text-primary text-2xl font-bold mt-2">
-                          ${item.price.toFixed(2)}
+                          ₹{item.price.toFixed(2)}
                         </p>
                       </div>
 
@@ -171,7 +172,7 @@ const Cart = () => {
 
                         {/* QTY */}
                         <div className="flex items-center bg-gray-100 rounded-2xl p-1">
-                          
+
                           <button
                             type="button"
                             onClick={() => updateQty(item, 'dec')}
@@ -197,14 +198,14 @@ const Cart = () => {
 
                         {/* RIGHT */}
                         <div className="flex items-center gap-5">
-                          
+
                           <div className="text-right">
                             <p className="text-sm text-gray-500">
                               Subtotal
                             </p>
 
                             <p className="text-lg md:text-xl font-bold text-gray-900">
-                              $
+                              ₹
                               {(
                                 item.qty * item.price
                               ).toFixed(2)}
@@ -238,6 +239,7 @@ const Cart = () => {
           )}
         </div>
       </div>
+      <TopPicks />
     </div>
   );
 };

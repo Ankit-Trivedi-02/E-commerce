@@ -12,7 +12,7 @@ const ProductCard = ({ product }) => {
         </Link>
         <p className="text-gray-500 text-sm mb-4 line-clamp-2">{product.description}</p>
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold text-gray-900">${product.price.toFixed(2)}</span>
+          <span className="text-xl font-bold text-gray-900">₹{product.price.toFixed(2)}</span>
           <Link to={`/product/${product._id}`} className="text-primary font-medium text-sm hover:underline">
             View Details
           </Link>

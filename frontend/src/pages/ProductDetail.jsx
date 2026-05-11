@@ -13,6 +13,7 @@ import axios from '../api/axios';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import TopPicks from '../components/TopPicks';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -32,7 +33,7 @@ const ProductDetail = () => {
         setProduct(data);
       } catch (error) {
         toast.error('Product not found');
-        navigate('/');
+        navigate('/shop');
       } finally {
         setLoading(false);
       }
@@ -103,7 +104,7 @@ const ProductDetail = () => {
 
       {/* BACK BUTTON */}
       <Link
-        to="/"
+        to="/shop"
         className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-gray-200 hover:border-indigo-500 hover:text-indigo-600 transition text-sm"
       >
         <ArrowLeft size={16} />
@@ -172,7 +173,7 @@ const ProductDetail = () => {
                 {/* PRICE */}
                 <div className="mt-8">
                   <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900">
-                    ${product.price.toFixed(2)}
+                    ₹{product.price.toFixed(2)}
                   </h2>
 
                   <p className="text-sm text-gray-500 mt-2">
@@ -281,6 +282,7 @@ const ProductDetail = () => {
           </div>
         </div>
       )}
+      <TopPicks/>
     </div>
   );
 };
