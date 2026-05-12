@@ -70,7 +70,7 @@ export default function TopPicks() {
                                 </p>
 
                                 <p className="text-xl font-medium text-slate-900 font-poppins">
-                                    $ {product.price}
+                                    ₹ {product.price}
                                 </p>
                             </a>
                         ))}
