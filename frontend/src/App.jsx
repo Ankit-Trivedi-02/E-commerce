@@ -17,6 +17,7 @@ import Profile from './pages/Profile';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import Footer from './components/Footer';
 import ContactUs from './pages/ContactUs';
+import Developer from './pages/developers';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/developer" element={<Developer />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
