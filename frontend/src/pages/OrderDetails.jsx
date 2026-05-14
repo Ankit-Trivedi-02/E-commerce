@@ -44,7 +44,7 @@ const OrderDetails = () => {
       <Link to="/orders" className="btn-secondary inline-flex items-center gap-2 mb-6 text-sm">
         <ArrowLeft size={16} /> Back to My Orders
       </Link>
-      
+
       <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 mb-8">
         <div className="flex justify-between items-start mb-6 border-b pb-6">
           <div>
@@ -54,7 +54,7 @@ const OrderDetails = () => {
           <div className="text-right">
             <span className="text-2xl font-bold text-primary">${order.totalPrice.toFixed(2)}</span>
             <p className="text-gray-500 text-sm mt-1">
-               {order.couponApplied ? 'Coupon Applied' : 'No Coupon Applied'}
+              {order.couponApplied ? 'Coupon Applied' : 'No Coupon Applied'}
             </p>
           </div>
         </div>
@@ -70,11 +70,11 @@ const OrderDetails = () => {
           ) : (
             <div className="relative max-w-3xl mx-auto">
               <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-300 rounded-full"></div>
-              <div 
+              <div
                 className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-primary rounded-full transition-all duration-500"
                 style={{ width: `${(statusIndex / 3) * 100}%` }}
               ></div>
-              
+
               <div className="flex justify-between relative z-10">
                 <div className="flex flex-col items-center">
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center ${statusIndex >= 0 ? 'bg-primary text-white' : 'bg-gray-300 text-gray-500'} shadow-md`}>
@@ -110,9 +110,9 @@ const OrderDetails = () => {
             <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Shipping Information</h3>
             <p className="text-gray-700"><strong>Name:</strong> {order.user.name}</p>
             <p className="text-gray-700"><strong>Email:</strong> {order.user.email}</p>
-            <p className="text-gray-700 mt-2"><strong>Address:</strong><br/>
-              {order.shippingAddress.address}<br/>
-              {order.shippingAddress.city}, {order.shippingAddress.postalCode}<br/>
+            <p className="text-gray-700 mt-2"><strong>Address:</strong><br />
+              {order.shippingAddress.address}<br />
+              {order.shippingAddress.city}, {order.shippingAddress.postalCode}<br />
               {order.shippingAddress.country}
             </p>
           </div>
@@ -121,7 +121,7 @@ const OrderDetails = () => {
             <div className="space-y-4">
               {order.orderItems.map((item, index) => (
                 <div key={index} className="flex items-center gap-4">
-                  <img src={item.image.startsWith('/') ? `http://localhost:5000${item.image}` : item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md border" />
+                  <img src={item.coverImage?.startsWith('/') ? `http://localhost:5000${item.coverImage}` : item.coverImage} alt={item.name} className="w-16 h-16 object-cover rounded-md border" />
                   <div className="flex-1">
                     <Link to={`/product/${item.product}`} className="font-semibold text-primary hover:underline">{item.name}</Link>
                     <p className="text-sm text-gray-600">Qty: {item.qty}</p>

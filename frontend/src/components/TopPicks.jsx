@@ -61,7 +61,7 @@ export default function TopPicks() {
                             >
                                 <img
                                     className="rounded-lg w-full group-hover:shadow-xl hover:-translate-y-0.5 duration-300 transition-all h-72 object-cover"
-                                    src={product.image}
+                                    src={product.coverImage}
                                     alt={product.name}
                                 />
 

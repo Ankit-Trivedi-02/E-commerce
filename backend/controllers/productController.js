@@ -56,13 +56,20 @@ const createProduct = asyncHandler(async (req, res) => {
     name: 'Sample name',
     price: 0,
     user: req.user._id,
-    image: '/images/sample.jpg',
+    coverImage: '/images/sample.jpg',
+    images: [
+      '/images/sample1.jpg',
+      '/images/sample2.jpg',
+      '/images/sample3.jpg',
+      '/images/sample4.jpg',
+    ],
     category: 'Sample category',
     stock: 0,
     description: 'Sample description',
   });
 
   const createdProduct = await product.save();
+
   res.status(201).json(createdProduct);
 });
 
@@ -70,18 +77,27 @@ const createProduct = asyncHandler(async (req, res) => {
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, image, category, stock } = req.body;
+  const {
+    name,
+    price,
+    description,
+    coverImage,
+    images,
+    category,
+    stock,
+  } = req.body;
 
   const product = await Product.findById(req.params.id);
 
   if (product) {
-    product.name = name;
-    product.price = price;
-    product.description = description;
-    product.image = image;
-    product.category = category;
-    product.stock = stock;
-
+    product.name = name || product.name;
+    product.price = price ?? product.price;
+    product.description = description || product.description;
+    product.coverImage = coverImage || product.coverImage;
+    product.images = images || product.images;
+    product.category = category || product.category;
+    product.stock = stock ?? product.stock;
+    
     const updatedProduct = await product.save();
     res.json(updatedProduct);
   } else {

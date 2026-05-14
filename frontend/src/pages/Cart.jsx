@@ -142,9 +142,9 @@ const Cart = () => {
                     <div className="w-full sm:w-28 h-28 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0">
                       <img
                         src={
-                          item.image.startsWith('/')
-                            ? `http://localhost:5000${item.image}`
-                            : item.image
+                          item.coverImage?.startsWith('/')
+                            ? `http://localhost:5000${item.coverImage}`
+                            : item.coverImage
                         }
                         alt={item.name}
                         className="w-full h-full object-cover"

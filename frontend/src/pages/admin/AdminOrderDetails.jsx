@@ -55,10 +55,10 @@ const AdminOrderDetails = () => {
             <h1 className="text-2xl font-bold text-gray-800">Order #{order._id}</h1>
             <p className="text-sm text-gray-500 mt-1">Placed: {new Date(order.createdAt).toLocaleString()}</p>
           </div>
-          
+
           <div className="mt-4 sm:mt-0 flex items-center gap-4 bg-white p-3 rounded-lg shadow-sm border">
             <label className="font-semibold text-gray-700">Status:</label>
-            <select 
+            <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
               className="border border-gray-300 rounded p-2 focus:ring-primary focus:outline-none"
@@ -69,7 +69,7 @@ const AdminOrderDetails = () => {
               <option value="delivered">Delivered</option>
               <option value="cancelled">Cancelled</option>
             </select>
-            <button 
+            <button
               onClick={updateStatusHandler}
               disabled={updating || status === order.status}
               className="btn-primary py-2 px-4 disabled:opacity-50"
@@ -86,7 +86,7 @@ const AdminOrderDetails = () => {
               <div className="space-y-4">
                 {order.orderItems.map((item, index) => (
                   <div key={index} className="flex items-center gap-4 bg-gray-50 p-4 rounded-lg">
-                    <img src={item.image.startsWith('/') ? `http://localhost:5000${item.image}` : item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                    <img src={item.coverImage} alt={item.name} className="w-16 h-16 object-cover rounded" />
                     <div className="flex-1">
                       <p className="font-semibold">{item.name}</p>
                       <p className="text-sm text-gray-500">Product ID: {item.product}</p>

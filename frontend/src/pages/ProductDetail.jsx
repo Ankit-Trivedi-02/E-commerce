@@ -23,6 +23,9 @@ const ProductDetail = () => {
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
 
+  // NEW
+  const [thumbnail, setThumbnail] = useState('');
+
   const { addToCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
 
@@ -30,7 +33,15 @@ const ProductDetail = () => {
     const fetchProduct = async () => {
       try {
         const { data } = await axios.get(`/api/products/${id}`);
+
         setProduct(data);
+
+        // SET DEFAULT IMAGE
+        setThumbnail(
+          data.coverImage?.startsWith('/')
+            ? `http://localhost:5000${data.coverImage}`
+            : data.coverImage
+        );
       } catch (error) {
         toast.error('Product not found');
         navigate('/shop');
@@ -48,7 +59,10 @@ const ProductDetail = () => {
       {
         product: product._id,
         name: product.name,
-        image: product.image,
+
+        // UPDATED
+        coverImage: product.coverImage,
+
         price: product.price,
         countInStock: product.stock,
       },
@@ -65,7 +79,10 @@ const ProductDetail = () => {
       {
         product: product._id,
         name: product.name,
-        image: product.image,
+
+        // UPDATED
+        coverImage: product.coverImage,
+
         price: product.price,
         countInStock: product.stock,
       },
@@ -101,7 +118,6 @@ const ProductDetail = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
-
       {/* BACK BUTTON */}
       <Link
         to="/shop"
@@ -114,28 +130,56 @@ const ProductDetail = () => {
       {product && (
         <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden p-5 md:p-8">
           <div className="flex flex-col md:flex-row gap-10">
-
             {/* IMAGE */}
             <div className="md:w-1/2">
-              <div className="border border-gray-200 rounded-3xl overflow-hidden bg-gray-50">
-                <img
-                  src={
-                    product.image.startsWith('/')
-                      ? `http://localhost:5000${product.image}`
-                      : product.image
-                  }
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className="flex gap-4">
+                {/* THUMBNAILS */}
+                <div className="flex flex-col gap-3">
+                  {[
+                    product.coverImage,
+                    ...(product.images || []),
+                  ].map((image, index) => {
+                    const imageUrl = image.startsWith('/')
+                      ? `http://localhost:5000${image}`
+                      : image;
+
+                    return (
+                      <div
+                        key={index}
+                        onClick={() =>
+                          setThumbnail(imageUrl)
+                        }
+                        className={`w-20 h-20 rounded-2xl overflow-hidden border cursor-pointer transition ${
+                          thumbnail === imageUrl
+                            ? 'border-indigo-500'
+                            : 'border-gray-200'
+                        }`}
+                      >
+                        <img
+                          src={imageUrl}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* MAIN IMAGE */}
+                <div className="flex-1 border border-gray-200 rounded-3xl overflow-hidden bg-gray-50">
+                  <img
+                    src={thumbnail}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             </div>
 
             {/* INFO */}
             <div className="md:w-1/2 flex flex-col justify-between">
-
               {/* TOP CONTENT */}
               <div>
-
                 {/* CATEGORY */}
                 <p className="text-sm uppercase tracking-widest text-indigo-500 font-semibold mb-3">
                   {product.category}
@@ -188,10 +232,11 @@ const ProductDetail = () => {
                   </span>
 
                   <span
-                    className={`font-semibold ${product.stock > 0
+                    className={`font-semibold ${
+                      product.stock > 0
                         ? 'text-green-600'
                         : 'text-red-500'
-                      }`}
+                    }`}
                   >
                     {product.stock > 0
                       ? `${product.stock} In Stock`
@@ -202,13 +247,11 @@ const ProductDetail = () => {
                 {/* QUANTITY */}
                 {product.stock > 0 && (
                   <div className="flex items-center justify-between mt-6">
-
                     <span className="font-medium text-gray-700">
                       Quantity
                     </span>
 
                     <div className="flex items-center bg-gray-100 rounded-2xl p-1">
-
                       <button
                         type="button"
                         onClick={decrementQty}
@@ -226,7 +269,8 @@ const ProductDetail = () => {
                         type="button"
                         onClick={incrementQty}
                         disabled={
-                          qty >= Math.min(product.stock, 10)
+                          qty >=
+                          Math.min(product.stock, 10)
                         }
                         className="w-11 h-11 rounded-xl bg-white flex items-center justify-center hover:bg-gray-50 transition disabled:opacity-40"
                       >
@@ -237,17 +281,16 @@ const ProductDetail = () => {
                 )}
 
                 {/* BUTTONS */}
-                {/* MOBILE: ABOVE DESCRIPTION */}
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
-
                   {/* ADD TO CART */}
                   <button
                     onClick={addToCartHandler}
                     disabled={product.stock === 0}
-                    className={`flex-1 py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2 ${product.stock === 0
+                    className={`flex-1 py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2 ${
+                      product.stock === 0
                         ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
                         : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
-                      }`}
+                    }`}
                   >
                     <ShoppingCart size={20} />
                     Add to Cart
@@ -257,10 +300,11 @@ const ProductDetail = () => {
                   <button
                     onClick={buyNowHandler}
                     disabled={product.stock === 0}
-                    className={`flex-1 py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2 ${product.stock === 0
+                    className={`flex-1 py-4 rounded-2xl font-semibold transition flex items-center justify-center gap-2 ${
+                      product.stock === 0
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         : 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                      }`}
+                    }`}
                   >
                     <CreditCard size={20} />
                     Buy Now
@@ -282,7 +326,8 @@ const ProductDetail = () => {
           </div>
         </div>
       )}
-      <TopPicks/>
+
+      <TopPicks />
     </div>
   );
 };
