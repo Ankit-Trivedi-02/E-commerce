@@ -4,29 +4,29 @@ const Home = () => {
 
   const categories = [
     {
-      name: 'Electronics',
+      name: 'Cricket',
       image:
-        'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop',
+        'https://crowncricketer.com/wp-content/uploads/2024/04/Cricket-Bats.jpeg',
     },
     {
-      name: 'Fashion',
+      name: 'Football',
       image:
-        'https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1200&auto=format&fit=crop',
+        'https://images.jdmagicbox.com/v2/comp/mumbai/h4/022pxx22.xx22.110712190802.k4h4/catalogue/royal-sports-dhobi-talao-mumbai-sports-goods-dealers-317f44r.jpg',
     },
     {
-      name: 'Home Decor',
+      name: 'Badminton',
       image:
-        'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+        'https://ultrex.in/wp-content/uploads/2023/11/Untitled-design-2025-01-04T133909.646.png',
     },
     {
-      name: 'Beauty',
+      name: 'Basketball',
       image:
-        'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop',
+        'https://static1.gensler.com/uploads/hero_element/20388/thumb_desktop/thumbs/project-nba-store-paris-08-2000x1125_1661986274_1024x576.jpg',
     },
     {
-      name: 'Sports',
+      name: 'Table Tennis',
       image:
-        'https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=1200&auto=format&fit=crop',
+        'https://www.greenpaddle.com/cdn/shop/files/IMG_4828_2000x2000_crop_center.jpg?v=1613688307',
     },
   ];
 
